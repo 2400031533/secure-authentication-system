@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}SecureGate{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav class="nav">
+    <a class="logo" href="{{ url_for('index') }}"><span class="logo-icon">S</span> SecureGate</a>
+    <div class="nav-links">
+      {% if user is defined and user %}
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <form method="post" action="{{ url_for('logout') }}" class="inline-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="nav-button" type="submit">Sign out</button>
+        </form>
+      {% else %}
+        <a href="{{ url_for('login') }}">Sign in</a>
+        <a class="nav-cta" href="{{ url_for('register') }}">Create account</a>
+      {% endif %}
+    </div>
+  </nav>
+  <main class="page">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+          {% for category, message in messages %}
+            <p class="flash {{ category }}">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">SecureGate · Flask authentication demo · Use test data only</footer>
+</body>
+</html>

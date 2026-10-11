@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | SecureGate{% endblock %}
+{% block content %}
+<section class="dashboard-head"><span class="eyebrow">PRIVATE AREA</span><h1>Welcome, {{ user.username }}.</h1><p>You are signed in. This page checks the JWT on the server before showing your account details.</p></section>
+<section class="dashboard-grid">
+  <article class="panel profile-panel"><div class="profile-avatar">{{ user.username[0]|upper }}</div><div><span class="muted">SIGNED-IN USER</span><h2>{{ user.username }}</h2><p class="muted">Account created: {{ user.created_at[:10] }}</p></div><span class="pill">Authenticated</span></article>
+  <article class="panel"><span class="eyebrow">TOKEN POLICY</span><h2>{{ token_minutes }} minutes</h2><p class="muted">JWT lifetime. When it expires, sign in again to obtain a new token.</p></article>
+  <article class="panel"><span class="eyebrow">PASSWORD STORAGE</span><h2>bcrypt</h2><p class="muted">Only the password hash is stored in the SQLite database.</p></article>
+</section>
+<section class="panel api-panel"><div><span class="eyebrow">LIVE AUTH CHECK</span><h2>Protected API status</h2><p class="muted">Call <code>GET /api/me</code> using your browser's authentication cookie.</p></div><button class="secondary" id="checkBtn" type="button">Check authentication</button><pre id="apiResult" aria-live="polite">Click “Check authentication” to test the protected endpoint.</pre></section>
+<script>
+document.querySelector("#checkBtn").addEventListener("click", async () => {
+  const output = document.querySelector("#apiResult");
+  output.textContent = "Checking…";
+  try {
+    const response = await fetch("/api/me", {headers: {"Accept": "application/json"}});
+    const data = await response.json();
+    output.textContent = JSON.stringify({http_status: response.status, ...data}, null, 2);
+  } catch {
+    output.textContent = "Unable to contact the server.";
+  }
+});
+</script>
+{% endblock %}

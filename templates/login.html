@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Sign in | SecureGate{% endblock %}
+{% block content %}
+<section class="auth-layout">
+  <div class="auth-aside"><span class="eyebrow">WELCOME BACK</span><h1>Good to see you again.</h1><p>Sign in to access your protected dashboard and verify your authentication status.</p><div class="mini-check">✓ Signed JWT access token</div><div class="mini-check">✓ HttpOnly cookie</div><div class="mini-check">✓ Automatic token expiry</div></div>
+  <div class="auth-card"><h2>Sign in</h2><p class="muted">Enter your registered credentials.</p>
+    <form method="post" action="{{ url_for('login') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label for="username">Username</label><input id="username" name="username" autocomplete="username" required placeholder="Your username">
+      <label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Your password">
+      <button class="primary full" type="submit">Sign in securely →</button>
+    </form><p class="switch">New here? <a href="{{ url_for('register') }}">Create an account</a></p>
+  </div>
+</section>
+{% endblock %}

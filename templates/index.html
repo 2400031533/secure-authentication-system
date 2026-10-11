@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}SecureGate | Welcome{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">SECURITY-FIRST ACCESS</span>
+    <h1>Simple access.<br><em>Stronger protection.</em></h1>
+    <p>A learning project demonstrating secure password hashing, JWT authentication, protected pages, and session expiry.</p>
+    <div class="hero-actions">
+      {% if user %}
+        <a class="primary" href="{{ url_for('dashboard') }}">Open dashboard →</a>
+      {% else %}
+        <a class="primary" href="{{ url_for('register') }}">Get started →</a>
+        <a class="secondary" href="{{ url_for('login') }}">Sign in</a>
+      {% endif %}
+    </div>
+    <div class="trust-row"><span>✓ bcrypt password hashing</span><span>✓ JWT access token</span><span>✓ CSRF-protected forms</span></div>
+  </div>
+  <div class="security-card">
+    <div class="shield">✓</div><span class="secure-label">SECURITY STATUS</span><h2>Protection enabled</h2>
+    <p>Your demo account uses a hashed password and a signed, time-limited token.</p>
+    <div class="line"><span>Password storage</span><strong>Hashed</strong></div>
+    <div class="line"><span>Access token</span><strong>30 minutes</strong></div>
+    <div class="line"><span>Cookie</span><strong>HttpOnly</strong></div>
+  </div>
+</section>
+<section class="features">
+  <article><span>01</span><h3>Protected access</h3><p>Only authenticated users can open the private dashboard.</p></article>
+  <article><span>02</span><h3>Safer password storage</h3><p>Passwords are hashed with bcrypt and never stored as plain text.</p></article>
+  <article><span>03</span><h3>Time-limited JWT</h3><p>Signed tokens expire automatically after 30 minutes.</p></article>
+</section>
+{% endblock %}
